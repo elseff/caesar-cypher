@@ -1,7 +1,15 @@
 public class Cypher {
     private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
+    private final int encryptKey;
+    private final int decryptKey;
 
-    public static char shiftSymbol(char symbol, int shift) {
+    public Cypher(int encryptKey) {
+        this.encryptKey = encryptKey;
+        int alphabetPower = alphabet.length();
+        decryptKey = alphabetPower - encryptKey;
+    }
+
+    private char shiftSymbol(char symbol, int shift) {
         if (alphabet.indexOf(symbol) != -1 && shift > 0) {
             return alphabet.charAt((alphabet.indexOf(symbol) + shift) % alphabet.length());
         } else {
@@ -9,19 +17,19 @@ public class Cypher {
         }
     }
 
-    //show all possible text options
-    public static void encryptString(String text) {
-        text = text.toLowerCase();
-        System.out.println("Current text: " + text);
-        System.out.println("All possible text options:");
-        for (int i = 0; i < alphabet.length(); i++) {
-            for (int j = 0; j < text.length(); j++) {
-                char symbol = shiftSymbol(text.charAt(j), i);
-                System.out.print(symbol);
-            }
-            System.out.println();
+    public String encryptString(String str){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            stringBuilder.append(shiftSymbol(str.charAt(i), encryptKey));
         }
-        System.out.println("End");
+        return stringBuilder.toString();
     }
 
+    public String decryptString(String str){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            stringBuilder.append(shiftSymbol(str.charAt(i), decryptKey));
+        }
+        return stringBuilder.toString();
+    }
 }
